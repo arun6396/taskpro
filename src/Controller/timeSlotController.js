@@ -74,27 +74,32 @@ exports.getAvailableSlots = async (req, res) => {
         .json(responseFormatter({}, 400, "Date is required"));
     }
  
-   
-    const requestedDate = new Date(date);
+   const requestedDate = new Date(date); // This includes time, possibly in UTC
 
-    
-    const todayIST = getISTDateObject();
+// Convert all dates to local date (midnight, IST) for safe comparison
+const toLocalDateOnly = (d) => {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+};
 
-    const today = new Date(todayIST.setHours(0, 0, 0, 0));
-    const dayAfterTomorrow = new Date(today);
-    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+const todayIST = getISTDateObject(); // This gives current IST datetime
 
-    if (requestedDate < today || requestedDate > dayAfterTomorrow) {
-      return res.status(400).json(
-        responseFormatter(
-          {},
-          400,
-          "Invalid date. Only today and the next 2 days are allowed."
-        )
-      );
-    }
+const today = toLocalDateOnly(todayIST);
 
-    
+const dayAfterTomorrow = new Date(today);
+dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+
+const requestedDateOnly = toLocalDateOnly(requestedDate);
+
+if (requestedDateOnly < today || requestedDateOnly > dayAfterTomorrow) {
+  return res.status(400).json(
+    responseFormatter(
+      {},
+      400,
+      "Invalid date. Only today and the next 2 days are allowed."
+    )
+  );
+}
+ 
     const timeSlotDoc = await TimeSlot.findOne();
 
     if (!timeSlotDoc) {
