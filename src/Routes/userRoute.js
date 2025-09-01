@@ -5,9 +5,9 @@ const verifyToken = require("../MiddleWare/verifyToken");
 
 router.post("/otp/send", userController.sendOtp);
 router.post("/otp/verify", userController.verifyOtp);
-router.put("/update/:id", userController.updateUserById);
+router.put("/update/:id",verifyToken, userController.updateUserById);
 
-router.get("/getByUser",verifyToken ,userController.getByUser);
+router.get("/getByUser", verifyToken, userController.getByUser);
 
 // router.patch("/update-device-token", userController.updateDeviceToken);
 
