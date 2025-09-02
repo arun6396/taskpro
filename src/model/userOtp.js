@@ -14,4 +14,4 @@ const userOtpSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("UserOtp", userOtpSchema); // NOTE: Capital U
+module.exports = mongoose.model("UserOtp", userOtpSchema);

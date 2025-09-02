@@ -110,6 +110,8 @@ exports.verifyOtp = async (req, res) => {
 
       const { token: _, ...userWithoutToken } = user.toObject();
 
+      const currentTime = getISTDateObject();
+      console.log(currentTime);
       return res
         .status(200)
         .json(
@@ -132,6 +134,7 @@ exports.verifyOtp = async (req, res) => {
       city: null,
       isNewUser: true,
       createdAt: getISTDateObject(),
+      updatedAt: getISTDateObject(),
     });
 
     await newUser.save();

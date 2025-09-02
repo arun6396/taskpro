@@ -1,8 +1,9 @@
-const getISTDateObject = () => {
-  const now = new Date();
-  const istOffset = 5.5 * 60 * 60 * 1000; 
-  return new Date(now.getTime() + istOffset);
-};
+const getISTDateObject = (date = new Date()) => {
+  const istDateString = new Date(date).toLocaleString("en-US", {
+    timeZone: "Asia/Kolkata",
+  });
 
+  return new Date(istDateString);
+};
 
 module.exports = getISTDateObject;
